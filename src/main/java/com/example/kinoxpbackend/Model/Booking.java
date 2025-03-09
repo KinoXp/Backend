@@ -1,9 +1,7 @@
 package com.example.kinoxpbackend.Model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import org.apache.catalina.User;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,10 +9,30 @@ import java.util.List;
 @Entity
 public class Booking {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;  // Den bruger, der har lavet bookingen
+
+    @ManyToOne
+    @JoinColumn(name = "screening_id", nullable = false)
     private Screening screening;  // Forestillingen, som der er booket billetter til
+
+    @ManyToOne
+    @JoinColumn(name = "theatre_id", nullable = false)
+    private Theatre theatre;
+
+    @ManyToMany
+    @JoinTable(
+            name = "booking_seat",
+            joinColumns = @JoinColumn(name = "booking_id"),
+            inverseJoinColumns = @JoinColumn(name = "seat_id")
+    )
     private List<Seat> seats;  // Sæderne, der er booket
+
+    @Column(name = "createdAt")
     private LocalDateTime bookingTime;  // Tidspunktet for bookingen
 
     // Konstruktør, getters og setters

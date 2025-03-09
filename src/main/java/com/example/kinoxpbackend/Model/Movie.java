@@ -1,22 +1,31 @@
 package com.example.kinoxpbackend.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.awt.print.Book;
+import java.util.List;
 
 @Entity
 public class Movie {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "title")
     private String title;
 
+    @Column(name = "category")
     private String category;
 
+    @Column(name = "ageLimit")
     private int ageLimit;
 
+    @Column(name = "showTime")
     private String showTime;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private List<Screening> screenings;  // En film kan have mange visninger
+
 
     // Konstruktor
     public Movie(int id, String title, String category, int ageLimit, String showTime) {
@@ -25,6 +34,7 @@ public class Movie {
         this.ageLimit = ageLimit;
         this.showTime = showTime;
     }
+
 
     public Movie() {
 

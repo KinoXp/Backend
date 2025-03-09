@@ -21,7 +21,6 @@ public class MovieController {
     // Vis formularen for at tilføje en ny film
     @GetMapping("/add")
     public String showAddMovieForm(Model model) {
-        model.addAttribute("movie", new Movie(0,"", "", 0, "")); // Opretter et tomt Movie-objekt for formularen
         return "add-movie";
     }
 

@@ -1,18 +1,29 @@
 package com.example.kinoxpbackend.Model;
 
 
+import jakarta.persistence.*;
+
 import java.util.List;
 
+@Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
-    private List<Booking> bookings;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Booking> bookings; // Bookinger lavet af denne bruger
     // Konstruktør, getters og setters
     public User(Long id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
+    }
+
+    public User() {
+
     }
 
     public Long getId() {

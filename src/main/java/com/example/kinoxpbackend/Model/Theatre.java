@@ -1,10 +1,21 @@
 package com.example.kinoxpbackend.Model;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
 public class Theatre {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name; // F.eks. "Sal 1" eller "Sal 2"
     private int rows;
     private int seatsPerRow;
+
+    @OneToMany(mappedBy = "theatre", cascade = CascadeType.ALL)
+    private List<Screening> screenings; // Visninger i dette teater
 
     public Theatre(Long id, String name, int rows, int seatsPerRow) {
         this.id = id;
