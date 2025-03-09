@@ -24,6 +24,10 @@ public class Theatre {
         this.seatsPerRow = seatsPerRow;
     }
 
+    public Theatre() {
+
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
