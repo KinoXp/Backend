@@ -1,7 +1,15 @@
 package com.example.kinoxpbackend.Model;
 
-public class Movie {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
+public class Movie {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    private int id;
     private String title;
 
     private String category;
@@ -11,11 +19,15 @@ public class Movie {
     private String showTime;
 
     // Konstruktor
-    public Movie(String title, String category, int ageLimit, String showTime) {
+    public Movie(int id, String title, String category, int ageLimit, String showTime) {
         this.title = title;
         this.category = category;
         this.ageLimit = ageLimit;
         this.showTime = showTime;
+    }
+
+    public Movie() {
+
     }
 
     // Getters and Setters

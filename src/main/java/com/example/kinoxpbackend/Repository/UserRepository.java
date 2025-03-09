@@ -1,8 +1,9 @@
 package com.example.kinoxpbackend.Repository;
 
-import com.example.kinoxpbackend.Model.Booking;
+import com.example.kinoxpbackend.Model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookingRepository extends JpaRepository<Booking, Long> {}
+public interface UserRepository extends JpaRepository<User, Long> {
+}

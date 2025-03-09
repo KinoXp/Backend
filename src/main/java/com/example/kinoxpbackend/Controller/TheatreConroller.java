@@ -1,17 +1,20 @@
 package com.example.kinoxpbackend.Controller;
 
 import com.example.kinoxpbackend.Model.Theatre;
-import com.example.kinoxpbackend.Service.TheatreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.example.kinoxpbackend.Service.TheatreService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/theatres")
-public class TheatreController {
+public class TheatreConroller {
+
+    @Autowired
     private final TheatreService theatreService;
 
-    public TheatreController(TheatreService theatreService) {
+    public TheatreConroller(TheatreService theatreService) {
         this.theatreService = theatreService;
     }
 
