@@ -1,5 +1,4 @@
 package com.example.kinoxpbackend.Service;
-
 import com.example.kinoxpbackend.Model.Theatre;
 import com.example.kinoxpbackend.Repository.TheatreRepository;
 import org.springframework.stereotype.Service;

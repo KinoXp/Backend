@@ -1,38 +1,58 @@
 package com.example.kinoxpbackend.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
+@Table(name = "theatre")
 public class Theatre {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; // F.eks. "Sal 1" eller "Sal 2"
-    private int rows;
-    private int seatsPerRow;
+    private String name;
 
-    @OneToMany(mappedBy = "theatre", cascade = CascadeType.ALL)
-    private List<Screening> screenings; // Visninger i dette teater
+    @OneToMany(mappedBy = "theatre", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Allows serialization of the seats associated with the theatre
+    private List<Seat> seats;
 
-    public Theatre(Long id, String name, int rows, int seatsPerRow) {
+    // Constructors
+    public Theatre(Long id, String name, List<Seat> seats) {
         this.id = id;
         this.name = name;
-        this.rows = rows;
-        this.seatsPerRow = seatsPerRow;
+        this.seats = seats;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Theatre() {}
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public Theatre(String name) {
+        this.name = name;
+    }
 
-    public int getRows() { return rows; }
-    public void setRows(int rows) { this.rows = rows; }
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
 
-    public int getSeatsPerRow() { return seatsPerRow; }
-    public void setSeatsPerRow(int seatsPerRow) { this.seatsPerRow = seatsPerRow; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
+    }
 }
