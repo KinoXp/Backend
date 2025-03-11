@@ -20,17 +20,17 @@ public class Ticket {
 
     @ManyToOne
     @JoinColumn(name = "screening_id", referencedColumnName = "id", nullable = false)
-    @JsonBackReference("screening-tickets") // Unique reference name
+    @JsonBackReference("screening-tickets") // Prevents serialization of Screening
     private Screening screening;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    @JsonBackReference("user-tickets") // Unique reference name
+    @JsonBackReference("user-tickets") // Prevents serialization of User
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "booking_id", referencedColumnName = "id", nullable = false)
-    @JsonBackReference("booking-tickets") // Unique reference name
+    @JsonBackReference("booking-tickets") // Prevents serialization of Booking
     private Booking booking;
 
     // Constructors

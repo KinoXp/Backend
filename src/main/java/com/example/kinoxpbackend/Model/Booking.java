@@ -15,23 +15,23 @@ public class Booking {
 
     private String customerName;
     private String movieTitle;
-    private int numberOfSeats;
+        private int numberOfSeats;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonBackReference("user-bookings") // Unique reference name
+    @JsonBackReference("user-bookings") // Prevents serialization of User
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "screening_id", referencedColumnName = "id")
-    @JsonBackReference("screening-bookings") // Unique reference name
+    @JsonBackReference("screening-bookings") // Prevents serialization of Screening
     private Screening screening;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("booking-tickets") // Unique reference name
+    @JsonManagedReference("booking-tickets") // Allows serialization of Tickets
     private Set<Ticket> tickets = new HashSet<>();
-
     // Constructors
+
     public Booking() {}
 
     public Booking(String customerName, String movieTitle, int numberOfSeats, User user, Screening screening) {

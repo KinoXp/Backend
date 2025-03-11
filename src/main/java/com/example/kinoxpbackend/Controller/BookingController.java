@@ -1,6 +1,7 @@
 package com.example.kinoxpbackend.Controller;
 
 import com.example.kinoxpbackend.DTO.BookingRequest;
+import com.example.kinoxpbackend.DTO.BookingResponse;
 import com.example.kinoxpbackend.Model.Booking;
 import com.example.kinoxpbackend.Service.BookingService;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/bookings")  // Base path for all booking operations
 public class BookingController {
@@ -35,10 +37,10 @@ public class BookingController {
 
     // Opret en ny booking
     @PostMapping("/bookings")
-    public ResponseEntity<Booking> createBooking(@RequestBody BookingRequest bookingRequest) {
+    public ResponseEntity<BookingResponse> createBooking(@RequestBody BookingRequest bookingRequest) {
         try {
-            Booking newBooking = bookingService.createBooking(bookingRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newBooking);
+            BookingResponse bookingResponse = bookingService.createBookings(bookingRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(bookingResponse);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
