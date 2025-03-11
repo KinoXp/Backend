@@ -1,58 +1,53 @@
 package com.example.kinoxpbackend.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "screening")
 public class Screening {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String theatreName;
-    private LocalDateTime screeningTime; // Tidspunkt for visningen
+    private LocalDate date;
+    private LocalTime time;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id", nullable = false)
-    private Movie movie; // Hvilken film der vises
+    @JoinColumn(name = "movie_id", referencedColumnName = "id")
+    @JsonBackReference("movieReference")
+    private Movie movie;
+
 
     @ManyToOne
-    @JoinColumn(name = "theatre_id", nullable = false)
-    private Theatre theatre; // Hvilket teater visningen foregår i
+    @JsonIgnore // This prevents serialization of the theatre in Screening
+    @JoinColumn(name = "theatre_id", referencedColumnName = "id")
+    private Theatre theatre;
 
-    @ManyToMany
-    @JoinTable(
-            name = "screening_seat",
-            joinColumns = @JoinColumn(name = "screening_id"),
-            inverseJoinColumns = @JoinColumn(name = "seat_id")
-    )
-    private List<Seat> seats; // Sæderne, der er tilgængelige for denne visning
+    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference // This prevents serialization of the tickets in Screening
+    private Set<Ticket> tickets = new HashSet<>();
 
-    // Getters og setters
-
-    // Constructors
     public Screening() {}
 
-    public Screening(LocalDateTime screeningTime, Movie movie) {
-        this.screeningTime = screeningTime;
-        this.movie = movie;
-    }
-
+    // Getters and Setters
     public Long getId() { return id; }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getScreeningTime() { return screeningTime; }
-    public void setScreeningTime(LocalDateTime screeningTime) { this.screeningTime = screeningTime; }
-
+    public void setId(Long id) { this.id = id; }
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date; }
+    public LocalTime getTime() { return time; }
+    public void setTime(LocalTime time) { this.time = time; }
     public Movie getMovie() { return movie; }
-    public void setMovie(Movie movie) {
-        this.movie = movie;
-
-    }
-
+    public void setMovie(Movie movie) { this.movie = movie; }
+    public Theatre getTheatre() { return theatre; }
+    public void setTheatre(Theatre theatre) { this.theatre = theatre; }
+    public Set<Ticket> getTickets() { return tickets; }
+    public void setTickets(Set<Ticket> tickets) { this.tickets = tickets; }
 }

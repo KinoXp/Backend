@@ -4,9 +4,7 @@ import com.example.kinoxpbackend.Model.Movie;
 import com.example.kinoxpbackend.Service.MovieService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/movies")
@@ -24,8 +22,8 @@ public class MovieController {
         return "add-movie";
     }
 
-    @PostMapping
-    public String addMovie(Movie movie) {
+    @PostMapping("addMovie")
+    public String addMovie(@RequestBody Movie movie) {
         movieService.addMovie(movie);  // Tilføjer filmen til listen med movieService
         return "redirect:/movies";
     }

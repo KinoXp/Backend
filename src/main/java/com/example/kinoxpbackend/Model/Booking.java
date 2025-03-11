@@ -1,90 +1,60 @@
 package com.example.kinoxpbackend.Model;
 
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Booking {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;  // Den bruger, der har lavet bookingen
+    private String customerName;
+    private String movieTitle;
+    private int numberOfSeats;
 
     @ManyToOne
-    @JoinColumn(name = "screening_id", nullable = false)
-    private Screening screening;  // Forestillingen, som der er booket billetter til
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonBackReference("user-bookings") // Unique reference name
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "theatre_id", nullable = false)
-    private Theatre theatre;
+    @JoinColumn(name = "screening_id", referencedColumnName = "id")
+    @JsonBackReference("screening-bookings") // Unique reference name
+    private Screening screening;
 
-    @ManyToMany
-    @JoinTable(
-            name = "booking_seat",
-            joinColumns = @JoinColumn(name = "booking_id"),
-            inverseJoinColumns = @JoinColumn(name = "seat_id")
-    )
-    private List<Seat> seats;  // Sæderne, der er booket
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("booking-tickets") // Unique reference name
+    private Set<Ticket> tickets = new HashSet<>();
 
-    @Column(name = "createdAt")
-    private LocalDateTime bookingTime;  // Tidspunktet for bookingen
+    // Constructors
+    public Booking() {}
 
-    // Konstruktør, getters og setters
-    public Booking(Long id, User user, Screening screening, List<Seat> seats) {
-        this.id = id;
+    public Booking(String customerName, String movieTitle, int numberOfSeats, User user, Screening screening) {
+        this.customerName = customerName;
+        this.movieTitle = movieTitle;
+        this.numberOfSeats = numberOfSeats;
         this.user = user;
         this.screening = screening;
-        this.seats = seats;
-        this.bookingTime = LocalDateTime.now();  // Bookingtidspunkt er det aktuelle tidspunkt
     }
 
-    public Booking() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Screening getScreening() {
-        return screening;
-    }
-
-    public void setScreening(Screening screening) {
-        this.screening = screening;
-    }
-
-    public List<Seat> getSeats() {
-        return seats;
-    }
-
-    public void setSeats(List<Seat> seats) {
-        this.seats = seats;
-    }
-
-    public LocalDateTime getBookingTime() {
-        return bookingTime;
-    }
-
-    public void setBookingTime(LocalDateTime bookingTime) {
-        this.bookingTime = bookingTime;
-    }
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }
+    public String getMovieTitle() { return movieTitle; }
+    public void setMovieTitle(String movieTitle) { this.movieTitle = movieTitle; }
+    public int getNumberOfSeats() { return numberOfSeats; }
+    public void setNumberOfSeats(int numberOfSeats) { this.numberOfSeats = numberOfSeats; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+    public Screening getScreening() { return screening; }
+    public void setScreening(Screening screening) { this.screening = screening; }
+    public Set<Ticket> getTickets() { return tickets; }
+    public void setTickets(Set<Ticket> tickets) { this.tickets = tickets; }
 }
